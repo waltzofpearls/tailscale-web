@@ -97,6 +97,8 @@ export interface Prefs {
 export interface Connection {
   /** Register a handler for incoming data. Must be called before write() — data can arrive as soon as the connection is established. */
   onData(handler: (data: Uint8Array) => void): void;
+  /** Register a handler invoked once when the connection ends: null on a clean EOF, or an error message on failure. Like onData, register it before write() — the connection can close at any time. */
+  onClose(handler: (err: string | null) => void): void;
   /** Send data over the connection. Accepts a Uint8Array or a string. */
   write(data: Uint8Array | string): void;
   /** Close the connection and release all resources. */
@@ -247,6 +249,9 @@ export const network = {
       onData(handler: (data: Uint8Array) => void) {
         raw.onData(handler);
       },
+      onClose(handler: (err: string | null) => void) {
+        raw.onClose(handler);
+      },
       write(data: Uint8Array | string) {
         raw.write(
           typeof data === "string" ? new TextEncoder().encode(data) : data,
@@ -285,6 +290,9 @@ export const network = {
       onConnection({
         onData(handler: (data: Uint8Array) => void) {
           rawConn.onData(handler);
+        },
+        onClose(handler: (err: string | null) => void) {
+          rawConn.onClose(handler);
         },
         write(data: Uint8Array | string) {
           rawConn.write(

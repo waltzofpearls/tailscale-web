@@ -1,6 +1,8 @@
 export declare interface Connection {
     /** Register a handler for incoming data. Must be called before write() — data can arrive as soon as the connection is established. */
     onData(handler: (data: Uint8Array) => void): void;
+    /** Register a handler invoked once when the connection ends: null on a clean EOF, or an error message on failure. Like onData, register it before write() — the connection can close at any time. */
+    onClose(handler: (err: string | null) => void): void;
     /** Send data over the connection. Accepts a Uint8Array or a string. */
     write(data: Uint8Array | string): void;
     /** Close the connection and release all resources. */
