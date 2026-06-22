@@ -46,6 +46,7 @@ func main() {
 	ns.Set("setExitNode", js.FuncOf(setExitNodeFn))
 	ns.Set("getRoutes", js.FuncOf(getRoutesFn))
 	ns.Set("getDNS", js.FuncOf(getDNSFn))
+	ns.Set("status", js.FuncOf(statusFn))
 	js.Global().Set("__tailscaleWeb", ns)
 
 	log.Println("tailscale-web: WASM ready")
@@ -398,5 +399,43 @@ func getDNSFn(this js.Value, args []js.Value) any {
 	obj.Set("domains", domains)
 	obj.Set("extraRecords", extraRecords)
 	obj.Set("magicDNS", d.MagicDNS)
+	return obj
+}
+
+// status() → { self: NodeStatus | null, peers: NodeStatus[] }
+//
+//	NodeStatus = { id, hostName, dnsName, os, tailscaleIP, userId, online, self }
+//
+// Returns the full netmap (self + all peers) with no capability filter, so callers can implement their
+// own peer discovery. Returns an empty object before init() resolves.
+func statusFn(this js.Value, args []js.Value) any {
+	if tsNet == nil {
+		return jsutil.NewObject()
+	}
+	st := tsNet.Status()
+	obj := jsutil.NewObject()
+	if st.Self != nil {
+		obj.Set("self", nodeStatusToJS(st.Self))
+	} else {
+		obj.Set("self", js.Null())
+	}
+	peers := js.Global().Get("Array").New(len(st.Peers))
+	for i, p := range st.Peers {
+		peers.SetIndex(i, nodeStatusToJS(p))
+	}
+	obj.Set("peers", peers)
+	return obj
+}
+
+func nodeStatusToJS(n *network.NodeStatus) js.Value {
+	obj := jsutil.NewObject()
+	obj.Set("id", n.ID)
+	obj.Set("hostName", n.HostName)
+	obj.Set("dnsName", n.DNSName)
+	obj.Set("os", n.OS)
+	obj.Set("tailscaleIP", n.TailscaleIP)
+	obj.Set("userId", n.UserID)
+	obj.Set("online", n.Online)
+	obj.Set("self", n.Self)
 	return obj
 }

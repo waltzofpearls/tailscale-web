@@ -1,5 +1,5 @@
 (() => {
-  const i = () => {
+  const n = () => {
     const o = new Error("not implemented");
     return o.code = "ENOSYS", o;
   };
@@ -8,88 +8,88 @@
     globalThis.fs = {
       constants: { O_WRONLY: -1, O_RDWR: -1, O_CREAT: -1, O_TRUNC: -1, O_APPEND: -1, O_EXCL: -1, O_DIRECTORY: -1 },
       // unused
-      writeSync(n, s) {
-        o += u.decode(s);
+      writeSync(i, s) {
+        o += m.decode(s);
         const r = o.lastIndexOf(`
 `);
         return r != -1 && (console.log(o.substring(0, r)), o = o.substring(r + 1)), s.length;
       },
-      write(n, s, r, c, y, d) {
+      write(i, s, r, c, y, f) {
         if (r !== 0 || c !== s.length || y !== null) {
-          d(i());
+          f(n());
           return;
         }
-        const w = this.writeSync(n, s);
-        d(null, w);
+        const w = this.writeSync(i, s);
+        f(null, w);
       },
-      chmod(n, s, r) {
-        r(i());
+      chmod(i, s, r) {
+        r(n());
       },
-      chown(n, s, r, c) {
-        c(i());
+      chown(i, s, r, c) {
+        c(n());
       },
-      close(n, s) {
-        s(i());
+      close(i, s) {
+        s(n());
       },
-      fchmod(n, s, r) {
-        r(i());
+      fchmod(i, s, r) {
+        r(n());
       },
-      fchown(n, s, r, c) {
-        c(i());
+      fchown(i, s, r, c) {
+        c(n());
       },
-      fstat(n, s) {
-        s(i());
+      fstat(i, s) {
+        s(n());
       },
-      fsync(n, s) {
+      fsync(i, s) {
         s(null);
       },
-      ftruncate(n, s, r) {
-        r(i());
+      ftruncate(i, s, r) {
+        r(n());
       },
-      lchown(n, s, r, c) {
-        c(i());
+      lchown(i, s, r, c) {
+        c(n());
       },
-      link(n, s, r) {
-        r(i());
+      link(i, s, r) {
+        r(n());
       },
-      lstat(n, s) {
-        s(i());
+      lstat(i, s) {
+        s(n());
       },
-      mkdir(n, s, r) {
-        r(i());
+      mkdir(i, s, r) {
+        r(n());
       },
-      open(n, s, r, c) {
-        c(i());
+      open(i, s, r, c) {
+        c(n());
       },
-      read(n, s, r, c, y, d) {
-        d(i());
+      read(i, s, r, c, y, f) {
+        f(n());
       },
-      readdir(n, s) {
-        s(i());
+      readdir(i, s) {
+        s(n());
       },
-      readlink(n, s) {
-        s(i());
+      readlink(i, s) {
+        s(n());
       },
-      rename(n, s, r) {
-        r(i());
+      rename(i, s, r) {
+        r(n());
       },
-      rmdir(n, s) {
-        s(i());
+      rmdir(i, s) {
+        s(n());
       },
-      stat(n, s) {
-        s(i());
+      stat(i, s) {
+        s(n());
       },
-      symlink(n, s, r) {
-        r(i());
+      symlink(i, s, r) {
+        r(n());
       },
-      truncate(n, s, r) {
-        r(i());
+      truncate(i, s, r) {
+        r(n());
       },
-      unlink(n, s) {
-        s(i());
+      unlink(i, s) {
+        s(n());
       },
-      utimes(n, s, r, c) {
-        c(i());
+      utimes(i, s, r, c) {
+        c(n());
       }
     };
   }
@@ -107,18 +107,18 @@
       return -1;
     },
     getgroups() {
-      throw i();
+      throw n();
     },
     pid: -1,
     ppid: -1,
     umask() {
-      throw i();
+      throw n();
     },
     cwd() {
-      throw i();
+      throw n();
     },
     chdir() {
-      throw i();
+      throw n();
     }
   }), globalThis.path || (globalThis.path = {
     resolve(...o) {
@@ -132,7 +132,7 @@
     throw new Error("globalThis.TextEncoder is not available, polyfill required");
   if (!globalThis.TextDecoder)
     throw new Error("globalThis.TextDecoder is not available, polyfill required");
-  const h = new TextEncoder("utf-8"), u = new TextDecoder("utf-8");
+  const h = new TextEncoder("utf-8"), m = new TextDecoder("utf-8");
   globalThis.Go = class {
     constructor() {
       this.argv = ["js"], this.env = {}, this.exit = (t) => {
@@ -142,7 +142,7 @@
       }), this._pendingEvent = null, this._scheduledTimeouts = /* @__PURE__ */ new Map(), this._nextCallbackTimeoutID = 1;
       const o = (t, e) => {
         this.mem.setUint32(t + 0, e, !0), this.mem.setUint32(t + 4, Math.floor(e / 4294967296), !0);
-      }, n = (t) => {
+      }, i = (t) => {
         const e = this.mem.getUint32(t + 0, !0), l = this.mem.getInt32(t + 4, !0);
         return e + l * 4294967296;
       }, s = (t) => {
@@ -168,33 +168,33 @@
         }
         let a = this._ids.get(e);
         a === void 0 && (a = this._idPool.pop(), a === void 0 && (a = this._values.length), this._values[a] = e, this._goRefCounts[a] = 0, this._ids.set(e, a)), this._goRefCounts[a]++;
-        let f = 0;
+        let d = 0;
         switch (typeof e) {
           case "object":
-            e !== null && (f = 1);
+            e !== null && (d = 1);
             break;
           case "string":
-            f = 2;
+            d = 2;
             break;
           case "symbol":
-            f = 3;
+            d = 3;
             break;
           case "function":
-            f = 4;
+            d = 4;
             break;
         }
-        this.mem.setUint32(t + 4, 2146959360 | f, !0), this.mem.setUint32(t, a, !0);
+        this.mem.setUint32(t + 4, 2146959360 | d, !0), this.mem.setUint32(t, a, !0);
       }, c = (t) => {
-        const e = n(t + 0), l = n(t + 8);
+        const e = i(t + 0), l = i(t + 8);
         return new Uint8Array(this._inst.exports.mem.buffer, e, l);
       }, y = (t) => {
-        const e = n(t + 0), l = n(t + 8), a = new Array(l);
-        for (let f = 0; f < l; f++)
-          a[f] = s(e + f * 8);
+        const e = i(t + 0), l = i(t + 8), a = new Array(l);
+        for (let d = 0; d < l; d++)
+          a[d] = s(e + d * 8);
         return a;
-      }, d = (t) => {
-        const e = n(t + 0), l = n(t + 8);
-        return u.decode(new DataView(this._inst.exports.mem.buffer, e, l));
+      }, f = (t) => {
+        const e = i(t + 0), l = i(t + 8);
+        return m.decode(new DataView(this._inst.exports.mem.buffer, e, l));
       }, w = (t, e) => (this._inst.exports.testExport0(), this._inst.exports.testExport(t, e)), g = Date.now() - performance.now();
       this.importObject = {
         _gotest: {
@@ -215,7 +215,7 @@
           // func wasmWrite(fd uintptr, p unsafe.Pointer, n int32)
           "runtime.wasmWrite": (t) => {
             t >>>= 0;
-            const e = n(t + 8), l = n(t + 16), a = this.mem.getInt32(t + 24, !0);
+            const e = i(t + 8), l = i(t + 16), a = this.mem.getInt32(t + 24, !0);
             fs.writeSync(e, new Uint8Array(this._inst.exports.mem.buffer, l, a));
           },
           // func resetMemoryDataView()
@@ -241,7 +241,7 @@
                 for (this._resume(); this._scheduledTimeouts.has(e); )
                   console.warn("scheduleTimeoutEvent: missed timeout event"), this._resume();
               },
-              n(t + 8)
+              i(t + 8)
             )), this.mem.setInt32(t + 16, e, !0);
           },
           // func clearTimeoutEvent(id int32)
@@ -265,36 +265,36 @@
           },
           // func stringVal(value string) ref
           "syscall/js.stringVal": (t) => {
-            t >>>= 0, r(t + 24, d(t + 8));
+            t >>>= 0, r(t + 24, f(t + 8));
           },
           // func valueGet(v ref, p string) ref
           "syscall/js.valueGet": (t) => {
             t >>>= 0;
-            const e = Reflect.get(s(t + 8), d(t + 16));
+            const e = Reflect.get(s(t + 8), f(t + 16));
             t = this._inst.exports.getsp() >>> 0, r(t + 32, e);
           },
           // func valueSet(v ref, p string, x ref)
           "syscall/js.valueSet": (t) => {
-            t >>>= 0, Reflect.set(s(t + 8), d(t + 16), s(t + 32));
+            t >>>= 0, Reflect.set(s(t + 8), f(t + 16), s(t + 32));
           },
           // func valueDelete(v ref, p string)
           "syscall/js.valueDelete": (t) => {
-            t >>>= 0, Reflect.deleteProperty(s(t + 8), d(t + 16));
+            t >>>= 0, Reflect.deleteProperty(s(t + 8), f(t + 16));
           },
           // func valueIndex(v ref, i int) ref
           "syscall/js.valueIndex": (t) => {
-            t >>>= 0, r(t + 24, Reflect.get(s(t + 8), n(t + 16)));
+            t >>>= 0, r(t + 24, Reflect.get(s(t + 8), i(t + 16)));
           },
           // valueSetIndex(v ref, i int, x ref)
           "syscall/js.valueSetIndex": (t) => {
-            t >>>= 0, Reflect.set(s(t + 8), n(t + 16), s(t + 24));
+            t >>>= 0, Reflect.set(s(t + 8), i(t + 16), s(t + 24));
           },
           // func valueCall(v ref, m string, args []ref) (ref, bool)
           "syscall/js.valueCall": (t) => {
             t >>>= 0;
             try {
-              const e = s(t + 8), l = Reflect.get(e, d(t + 16)), a = y(t + 32), f = Reflect.apply(l, e, a);
-              t = this._inst.exports.getsp() >>> 0, r(t + 56, f), this.mem.setUint8(t + 64, 1);
+              const e = s(t + 8), l = Reflect.get(e, f(t + 16)), a = y(t + 32), d = Reflect.apply(l, e, a);
+              t = this._inst.exports.getsp() >>> 0, r(t + 56, d), this.mem.setUint8(t + 64, 1);
             } catch (e) {
               t = this._inst.exports.getsp() >>> 0, r(t + 56, e), this.mem.setUint8(t + 64, 0);
             }
@@ -388,22 +388,22 @@
         [globalThis, 5],
         [this, 6]
       ]), this._idPool = [], this.exited = !1;
-      let n = 4096;
+      let i = 4096;
       const s = (g) => {
-        const t = n, e = h.encode(g + "\0");
-        return new Uint8Array(this.mem.buffer, n, e.length).set(e), n += e.length, n % 8 !== 0 && (n += 8 - n % 8), t;
+        const t = i, e = h.encode(g + "\0");
+        return new Uint8Array(this.mem.buffer, i, e.length).set(e), i += e.length, i % 8 !== 0 && (i += 8 - i % 8), t;
       }, r = this.argv.length, c = [];
       this.argv.forEach((g) => {
         c.push(s(g));
       }), c.push(0), Object.keys(this.env).sort().forEach((g) => {
         c.push(s(`${g}=${this.env[g]}`));
       }), c.push(0);
-      const d = n;
+      const f = i;
       if (c.forEach((g) => {
-        this.mem.setUint32(n, g, !0), this.mem.setUint32(n + 4, 0, !0), n += 8;
-      }), n >= 12288)
+        this.mem.setUint32(i, g, !0), this.mem.setUint32(i + 4, 0, !0), i += 8;
+      }), i >= 12288)
         throw new Error("total length of command line and environment variables exceeds limit");
-      this._inst.exports.run(r, d), this.exited && this._resolveExitPromise(), await this._exitPromise;
+      this._inst.exports.run(r, f), this.exited && this._resolveExitPromise(), await this._exitPromise;
     }
     _resume() {
       if (this.exited)
@@ -411,42 +411,42 @@
       this._inst.exports.resume(), this.exited && this._resolveExitPromise();
     }
     _makeFuncWrapper(o) {
-      const n = this;
+      const i = this;
       return function() {
         const s = { id: o, this: this, args: arguments };
-        return n._pendingEvent = s, n._resume(), s.result;
+        return i._pendingEvent = s, i._resume(), s.result;
       };
     }
   };
 })();
 const x = new URL("main.wasm", import.meta.url).href;
 (() => {
-  const i = globalThis, h = "process";
-  i[h] ? i[h].pid == null && (i[h].pid = 1) : i[h] = { pid: 1 };
+  const n = globalThis, h = "process";
+  n[h] ? n[h].pid == null && (n[h].pid = 1) : n[h] = { pid: 1 };
 })();
 let _ = null;
 function b() {
   return _ || (_ = (async () => {
-    const i = new globalThis.Go(), h = await WebAssembly.instantiateStreaming(
+    const n = new globalThis.Go(), h = await WebAssembly.instantiateStreaming(
       fetch(x),
-      i.importObject
+      n.importObject
     );
-    i.run(h.instance);
+    n.run(h.instance);
   })()), _;
 }
-function m() {
+function u() {
   return globalThis.__tailscaleWeb;
 }
-function T(i) {
+function T(n) {
   return {
-    status: i.status,
-    statusText: i.statusText,
-    ok: i.ok,
-    headers: i.headers,
-    text: async () => new TextDecoder().decode(i.body),
-    json: async () => JSON.parse(new TextDecoder().decode(i.body)),
-    arrayBuffer: async () => i.body.buffer,
-    bytes: async () => i.body
+    status: n.status,
+    statusText: n.statusText,
+    ok: n.ok,
+    headers: n.headers,
+    text: async () => new TextDecoder().decode(n.body),
+    json: async () => JSON.parse(new TextDecoder().decode(n.body)),
+    arrayBuffer: async () => n.body.buffer,
+    bytes: async () => n.body
   };
 }
 const p = {
@@ -481,8 +481,8 @@ const p = {
    *   onAuthRequired(url) { console.log("Authenticate at:", url) },
    * })
    */
-  async init(i = {}) {
-    return await b(), m().init(i);
+  async init(n = {}) {
+    return await b(), u().init(n);
   },
   /**
    * Send an ICMP ping to addr and measure round-trip time.
@@ -496,8 +496,8 @@ const p = {
    *   console.warn("unreachable:", result.err)
    * }
    */
-  async ping(i) {
-    return m().ping(i);
+  async ping(n) {
+    return u().ping(n);
   },
   /**
    * Open a raw TCP connection through the Tailscale network.
@@ -513,18 +513,18 @@ const p = {
    * conn.write("hello\n")
    * conn.close()
    */
-  async dialTCP(i) {
-    const h = await m().dialTCP(i);
+  async dialTCP(n) {
+    const h = await u().dialTCP(n);
     return {
-      onData(u) {
-        h.onData(u);
+      onData(m) {
+        h.onData(m);
       },
-      onClose(u) {
-        h.onClose(u);
+      onClose(m) {
+        h.onClose(m);
       },
-      write(u) {
+      write(m) {
         h.write(
-          typeof u == "string" ? new TextEncoder().encode(u) : u
+          typeof m == "string" ? new TextEncoder().encode(m) : m
         );
       },
       close() {
@@ -551,18 +551,18 @@ const p = {
    * console.log("assigned port:", listener.port)
    * listener.close()
    */
-  async listenTCP(i = 0, h) {
-    const u = await m().listenTCP(i, (o) => {
+  async listenTCP(n = 0, h) {
+    const m = await u().listenTCP(n, (o) => {
       h({
-        onData(n) {
-          o.onData(n);
+        onData(i) {
+          o.onData(i);
         },
-        onClose(n) {
-          o.onClose(n);
+        onClose(i) {
+          o.onClose(i);
         },
-        write(n) {
+        write(i) {
           o.write(
-            typeof n == "string" ? new TextEncoder().encode(n) : n
+            typeof i == "string" ? new TextEncoder().encode(i) : i
           );
         },
         close() {
@@ -571,9 +571,9 @@ const p = {
       });
     });
     return {
-      port: u.port,
+      port: m.port,
       close() {
-        u.close();
+        m.close();
       }
     };
   },
@@ -591,22 +591,22 @@ const p = {
    * console.log(resp.status, resp.ok)
    * const data = await resp.json()
    */
-  async fetch(i, h = {}) {
-    return T(await m().fetch(i, h));
+  async fetch(n, h = {}) {
+    return T(await u().fetch(n, h));
   },
   /**
    * Return this node's Tailscale IPv4 address, or an empty string if not yet assigned.
    * Synchronous — no await needed. Must be called after init() resolves.
    */
   localIPv4() {
-    return m().localIPv4();
+    return u().localIPv4();
   },
   /**
    * Return this node's Tailscale IPv6 address, or an empty string if not yet assigned.
    * Synchronous — no await needed. Must be called after init() resolves.
    */
   localIPv6() {
-    return m().localIPv6();
+    return u().localIPv6();
   },
   /**
    * Return the current preferences (acceptRoutes, exitNodeId).
@@ -617,7 +617,7 @@ const p = {
    * console.log("exit node:", exitNodeId || "(none)")
    */
   getPrefs() {
-    return m().getPrefs();
+    return u().getPrefs();
   },
   /**
    * Enable or disable acceptance of subnet routes advertised by peers.
@@ -626,8 +626,8 @@ const p = {
    * @example
    * await network.setAcceptRoutes(true)
    */
-  async setAcceptRoutes(i) {
-    return m().setAcceptRoutes(i);
+  async setAcceptRoutes(n) {
+    return u().setAcceptRoutes(n);
   },
   /**
    * Return all peers that advertise exit-node capability.
@@ -640,7 +640,7 @@ const p = {
    * }
    */
   listExitNodes() {
-    return Array.from(m().listExitNodes());
+    return Array.from(u().listExitNodes());
   },
   /**
    * Activate an exit node by its stable node ID.
@@ -655,8 +655,8 @@ const p = {
    * // Clear the active exit node
    * await network.setExitNode()
    */
-  async setExitNode(i = "") {
-    return m().setExitNode(i);
+  async setExitNode(n = "") {
+    return u().setExitNode(n);
   },
   /**
    * Return the full routing table (self + all peers).
@@ -669,7 +669,7 @@ const p = {
    * }
    */
   getRoutes() {
-    return Array.from(m().getRoutes());
+    return Array.from(u().getRoutes());
   },
   /**
    * Return the current Tailscale-managed DNS configuration.
@@ -684,7 +684,28 @@ const p = {
    * }
    */
   getDNS() {
-    return m().getDNS();
+    return u().getDNS();
+  },
+  /**
+   * Return the current tailnet status: this node (self) plus every peer it knows about.
+   * Unlike listExitNodes(), no capability filter is applied — you get the full netmap and can
+   * implement your own discovery (by owning user, hostname prefix, OS, etc.).
+   * Synchronous — no await needed. Returns { self: null, peers: [] } if called before init() resolves.
+   *
+   * @example
+   * // Discover your own nodes matching a hostname prefix (excluding in-browser WASM nodes).
+   * const { self, peers } = network.status()
+   * const mine = peers.filter(
+   *   p => self && p.userId === self.userId && p.hostName.startsWith("myapp-") && p.os !== "js",
+   * )
+   * for (const n of mine) console.log(n.hostName, n.dnsName, n.online ? "online" : "offline")
+   */
+  status() {
+    const n = u().status();
+    return {
+      self: n?.self ?? null,
+      peers: Array.from(n?.peers ?? [])
+    };
   }
 };
 export {

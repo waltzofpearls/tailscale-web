@@ -237,7 +237,40 @@ export declare const network: {
      * }
      */
     getDNS(): DNSInfo;
+    /**
+     * Return the current tailnet status: this node (self) plus every peer it knows about.
+     * Unlike listExitNodes(), no capability filter is applied — you get the full netmap and can
+     * implement your own discovery (by owning user, hostname prefix, OS, etc.).
+     * Synchronous — no await needed. Returns { self: null, peers: [] } if called before init() resolves.
+     *
+     * @example
+     * // Discover your own nodes matching a hostname prefix (excluding in-browser WASM nodes).
+     * const { self, peers } = network.status()
+     * const mine = peers.filter(
+     *   p => self && p.userId === self.userId && p.hostName.startsWith("myapp-") && p.os !== "js",
+     * )
+     * for (const n of mine) console.log(n.hostName, n.dnsName, n.online ? "online" : "offline")
+     */
+    status(): TailnetStatus;
 };
+
+export declare interface NodeStatus {
+    /** Stable node ID (survives logout/relogin). */
+    id: string;
+    hostName: string;
+    /** MagicDNS FQDN (ends with a dot). */
+    dnsName: string;
+    /** Operating system, e.g. "linux", "macOS", or "js" for an in-browser WASM node. */
+    os: string;
+    /** Primary Tailscale IPv4 address. */
+    tailscaleIP: string;
+    /** Owning Tailscale user's ID, stringified. Compare two nodes to tell if they share an owner. */
+    userId: string;
+    /** Whether the node is currently reachable. Self is always online. */
+    online: boolean;
+    /** Whether this entry is the local node. */
+    self: boolean;
+}
 
 export declare interface PingResult {
     alive: boolean;
@@ -295,6 +328,13 @@ export declare interface Route {
 export declare interface StorageAdapter {
     get(key: string): string | null;
     set(key: string, value: string): void;
+}
+
+export declare interface TailnetStatus {
+    /** The local node, or null before the node has come up. */
+    self: NodeStatus | null;
+    /** All other nodes in the netmap, in no particular order. */
+    peers: NodeStatus[];
 }
 
 export { }

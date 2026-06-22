@@ -18,6 +18,7 @@ import (
 	"github.com/adrianosela/tailscale-web/internal/listener"
 	"tailscale.com/ipn"
 	"tailscale.com/ipn/ipnlocal"
+	"tailscale.com/ipn/ipnstate"
 	"tailscale.com/logpolicy"
 	"tailscale.com/logtail"
 	"tailscale.com/net/netns"
@@ -511,6 +512,69 @@ func (n *Network) ListExitNodes() []*ExitNode {
 		nodes = append(nodes, node)
 	}
 	return nodes
+}
+
+// NodeStatus describes one node on the tailnet (this node, or a peer). It carries enough identity to
+// implement peer discovery in the caller (e.g. filtering to your own nodes by owning user, or to a
+// kind of node by hostname prefix) without baking any such policy into the library.
+type NodeStatus struct {
+	// ID is the stable node ID (survives logout/relogin).
+	ID string
+	// HostName is the machine's hostname.
+	HostName string
+	// DNSName is the MagicDNS FQDN (ends with a dot).
+	DNSName string
+	// OS is the node's operating system, e.g. "linux", "macOS", or "js" for an in-browser WASM node.
+	OS string
+	// TailscaleIP is the primary Tailscale IPv4 address of the node.
+	TailscaleIP string
+	// UserID is the owning Tailscale user's ID, stringified. Compare two nodes' UserID to tell whether
+	// they belong to the same user.
+	UserID string
+	// Online reports whether the node is currently reachable. Self is always reported online.
+	Online bool
+	// Self reports whether this entry is the local node.
+	Self bool
+}
+
+// TailnetStatus is a snapshot of the tailnet from this node's point of view: the local node plus every
+// peer it currently knows about.
+type TailnetStatus struct {
+	// Self is the local node, or nil before the node has come up.
+	Self *NodeStatus
+	// Peers are all other nodes in the netmap, in no particular order.
+	Peers []*NodeStatus
+}
+
+// Status returns the current tailnet status: this node and all of its peers. Unlike ListExitNodes it
+// applies no capability filter, so callers get the full netmap and can implement their own discovery
+// (by owning user, hostname prefix, OS, and so on).
+func (n *Network) Status() *TailnetStatus {
+	status := n.backend.Status()
+	out := &TailnetStatus{}
+	if status.Self != nil {
+		out.Self = peerToNodeStatus(status.Self, true)
+	}
+	for _, peer := range status.Peer {
+		out.Peers = append(out.Peers, peerToNodeStatus(peer, false))
+	}
+	return out
+}
+
+func peerToNodeStatus(peer *ipnstate.PeerStatus, self bool) *NodeStatus {
+	ns := &NodeStatus{
+		ID:       string(peer.ID),
+		HostName: peer.HostName,
+		DNSName:  peer.DNSName,
+		OS:       peer.OS,
+		UserID:   fmt.Sprintf("%d", peer.UserID),
+		Online:   self || peer.Online, // the local node is, by definition, reachable from itself
+		Self:     self,
+	}
+	if len(peer.TailscaleIPs) > 0 {
+		ns.TailscaleIP = peer.TailscaleIPs[0].String()
+	}
+	return ns
 }
 
 // Route represents a single entry in the routing table.
